@@ -1,0 +1,119 @@
+﻿@inherits LayoutComponentBase
+@using PruebaLogin.ViewModels.Login
+@inject AuthService _AuthService
+@inject NavigationManager navManager
+<div class="page">
+    <div class="sidebar">
+        @switch(_AuthService.CurrentUserRol) //si no funcio solo quitar el switch
+        {
+            case "Admin":
+                <NavMenu />
+                break;
+            case "Usuario":
+                <NavMenuUser/>
+                break;
+        }
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+
+            @if (_AuthService.IsLoggedIn)
+            {
+                //lo nuevo
+                <span class="me-3">
+                    <strong>@_AuthService.CurrentUser</strong>
+                    <span class="badge bg-primary">@_AuthService.CurrentUserRol</span>
+                </span>
+                //finde lo nuevo
+                <button class="btn btn-danger" @onclick="Logout">Cerrar Sesión</button>
+            }
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+
+
+</div>
+@code {
+    //lo nuevo
+    protected override void OnInitialized()
+    {
+        _AuthService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        _AuthService.OnChange -= StateHasChanged;
+    } //fin de lo nuevo
+
+
+    private void Logout()
+    {
+        _AuthService.Logout(); // limpia el estado de sesión
+        navManager.NavigateTo("/login", true); // redirige al login
+    }
+}
+
+@* @inherits LayoutComponentBase
+@using PruebaLogin.ViewModels.Login
+@inject AuthService _AuthService
+@inject NavigationManager navManager
+
+<div class="page">
+    <div class="sidebar">
+         Renderizar menú según el rol 
+        @switch (_AuthService.CurrentUserRol)
+        {
+            case "Administrador":
+                <NavMenuAdmin />
+                break;
+            case "Editor":
+                <NavMenuEditor />
+                break;
+            case "Usuario":
+                <NavMenuUsuario />
+                break;
+            default:
+                <NavMenuUsuario />
+                break;
+        }
+    </div>
+    
+    <main>
+        <div class="top-row px-4">
+            @if (_AuthService.IsLoggedIn)
+            {
+                <span class="me-3">
+                    <strong>@_AuthService.CurrentUser</strong> 
+                    <span class="badge bg-primary">@_AuthService.CurrentUserRol</span>
+                </span>
+                <button class="btn btn-danger" @onclick="Logout">Cerrar Sesión</button>
+            }
+        </div>
+        
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        _AuthService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        _AuthService.OnChange -= StateHasChanged;
+    }
+
+    private void Logout()
+    {
+        _AuthService.Logout();
+        navManager.NavigateTo("/login", true);
+    }
+} *@

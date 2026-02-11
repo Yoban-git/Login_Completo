@@ -1,0 +1,79 @@
+﻿@page "/usuarios"
+@using PruebaLogin.Models.Data
+@using PruebaLogin.Models.User
+@using PruebaLogin.ViewModels.PUsuariosController
+@inject AppDbContext _context
+@inject UsuarioController _usuariocontroller
+@inject NavigationManager navManagers
+
+<h3>Gestión de Usuarios</h3>
+
+<!-- Formulario -->
+<EditForm Model="nuevoUsuario" OnValidSubmit="GuardarUsuario">
+    <DataAnnotationsValidator />
+
+    <div class="form-floating mb-3">
+        <InputText class="form-control" id="nombre" @bind-Value="nuevoUsuario.Nombre" />
+        <label for="nombre">Nombre Completo</label>
+        <ValidationMessage For="@(() => nuevoUsuario.Nombre)" />
+    </div>
+
+    <div class="form-floating mb-3">
+        <InputText class="form-control" id="userName" @bind-Value="nuevoUsuario.UserName" />
+        <label for="userName">Usuario</label>
+        <ValidationMessage For="@(() => nuevoUsuario.UserName)" />
+    </div>
+
+    <div class="form-floating mb-3">
+        <InputText class="form-control" id="email" @bind-Value="nuevoUsuario.Email" />
+        <label for="email">Correo Electrónico</label>
+        <ValidationMessage For="@(() => nuevoUsuario.Email)" />
+    </div>
+
+    <div class="form-floating mb-3">
+        <InputText type="password" class="form-control" id="password" @bind-Value="nuevoUsuario.Password" />
+        <label for="password">Contraseña</label>
+        <ValidationMessage For="@(() => nuevoUsuario.Password)" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Registrar Usuario</button>
+</EditForm>
+<button type="button" class="btn btn-danger" @onclick="Cancelar">Danger</button>
+
+@if (!string.IsNullOrEmpty(mensajeError))
+{
+    <div class="alert alert-danger mt-3">@mensajeError</div>
+}
+@if (!string.IsNullOrEmpty(mensajeExito))
+{
+    <div class="alert alert-success mt-3">@mensajeExito</div>
+}
+
+
+@code{
+    private Usuarios2 nuevoUsuario = new Usuarios2();
+    private string mensajeError;
+    private string mensajeExito;
+
+    private async Task GuardarUsuario()
+    {
+        var resultado = await _usuariocontroller.AgregarUsuariosAsyng(nuevoUsuario);
+
+        if (resultado.Exito)
+        {
+            mensajeExito = "Usuario registrado correctamente.";
+            mensajeError = string.Empty;
+            nuevoUsuario = new Usuarios2();
+        }
+        else
+        {
+            mensajeError = resultado.Error;
+            mensajeExito = string.Empty;
+        }
+    }
+
+    private void Cancelar()
+    {
+        navManagers.NavigateTo("/usuarios-list");
+    }
+}

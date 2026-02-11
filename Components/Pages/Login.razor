@@ -1,0 +1,187 @@
+﻿@page "/login"
+@using PruebaLogin.ViewModels.UserController
+@using PruebaLogin.ViewModels.Login
+@using PruebaLogin.Models.User
+@inject AuthService _AuthService
+@inject NavigationManager navManager
+
+<div class="login-container">
+    <div class="login-card">
+        <h3 class="text-center mb-4">Iniciar Sesión</h3>
+
+        <EditForm Model="loginModel" OnValidSubmit="Acceder">
+            <DataAnnotationsValidator />
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    @errorMessage
+                    <button type="button" class="btn-close" @onclick="() => errorMessage = string.Empty"></button>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(mensajeExito))
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    @mensajeExito
+                    <button type="button" class="btn-close" @onclick="() => mensajeExito = string.Empty"></button>
+                </div>
+            }
+
+            <div class="form-group mb-3">
+                <label for="userName">Usuario o Email</label>
+                <InputText id="userName"
+                           class="form-control"
+                           @bind-Value="loginModel.UserName"
+                           placeholder="Ingresa tu usuario o email"
+                           disabled="@cargando" />
+                <ValidationMessage For="@(() => loginModel.UserName)" class="text-danger" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="password">Contraseña</label>
+                <InputText id="password"
+                           type="password"
+                           class="form-control"
+                           @bind-Value="loginModel.Password"
+                           placeholder="Ingresa tu contraseña"
+                           disabled="@cargando" />
+                <ValidationMessage For="@(() => loginModel.Password)" class="text-danger" />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" disabled="@cargando">
+                @if (cargando)
+                {
+                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                    <span>Iniciando sesión...</span>
+                }
+                else
+                {
+                    <span>Iniciar Sesión</span>
+                }
+            </button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+    private string errorMessage = string.Empty;
+    private string mensajeExito = string.Empty;
+    private bool cargando = false;
+
+    private async Task Acceder()
+    {
+        cargando = true;
+        errorMessage = string.Empty;
+        mensajeExito = string.Empty;
+        StateHasChanged();
+
+        try
+        {
+            var resultado = await _AuthService.Login(loginModel.UserName, loginModel.Password);
+
+            if (resultado.Exito)
+            {
+                mensajeExito = resultado.Mensaje;
+                StateHasChanged();
+
+                // Pequeño delay para que el usuario vea el mensaje de éxito
+                await Task.Delay(500);
+                navManager.NavigateTo("/", true);
+            }
+            else
+            {
+                errorMessage = resultado.Mensaje;
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error al iniciar sesión. Intenta nuevamente.";
+            Console.WriteLine($"Error en login: {ex.Message}");
+        }
+        finally
+        {
+            cargando = false;
+            StateHasChanged();
+        }
+    }
+
+    public class LoginModel
+    {
+        
+        public string UserName { get; set; } = string.Empty;
+
+        public string Password { get; set; } = string.Empty;
+    }
+}
+
+
+
+@* <div class="login-container">
+    <EditForm Model="usuarios2" OnValidSubmit="Acceder">
+        <div class="form-group">
+        <InputText @bind-Value="userName" placeholder="password" />
+        </div>
+        <div class="form-group">
+        <InputText type="password" @bind-Value="password" placeholder="Contraseña" />
+        </div>
+        <button type="submit" class="btn btn-primary w-100" disabled="@cargando">
+            @if (cargando)
+            {
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <span>Iniciando sesión...</span>
+            }
+            else
+            {
+                <span>Iniciar Sesión</span>
+            }
+        </button>
+    </EditForm>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p class="error-message">@errorMessage</p>
+    }
+</div> *@
+@* @code {
+    private Usuarios2 usuarios2 = new Usuarios2();
+    private string userName;
+    private string password;
+    private string errorMessage = "";
+    private bool cargando = false;
+    private async void Acceder()
+    {
+        cargando = true;
+        var success = await _AuthService.Login(userName, password);
+        //_AuthService.Login();
+        if (success)
+        {
+            navManager.NavigateTo("/", true); // redirige al login
+        } else
+        errorMessage = "Usuario o contraseña incorrecto";
+
+    }
+} *@
+@* @code {
+    //private LoginModel loginModel = new();
+    private Usuarios2 usuarios2 = new Usuarios2();
+    private string errorMessage = "";
+
+    private async Task HandleLogin()
+    {
+        var success = await _AuthService.LoginAsync(usuarios2.UserName, usuarios2.Password);
+
+        if (success)
+        {
+            // Redirigir al usuario
+            
+        }
+        else
+        {
+            errorMessage = "Usuario o contraseña incorrectos";
+        }
+    }
+} *@
