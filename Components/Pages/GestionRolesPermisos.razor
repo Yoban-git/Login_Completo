@@ -1,131 +1,162 @@
-﻿@* @page "/roles-permisos-list"
+﻿@page "/roles-permisos"
 @using PruebaLogin.Models.Roles
 @using PruebaLogin.Models.Permisos
+@using PruebaLogin.ViewModels.RolController
+@using PruebaLogin.ViewModels.PermissionController
+@inject RolService _rolService
+@inject PermisoService _permisoService
 
-<h3>Gestión de Roles y Permisos</h3>
+<h2>Gestión de Roles</h2>
 
-<div class="text-center mb-3">
-    <button class="btn btn-success me-2" @onclick="AgregarRol">Agregar Rol</button>
-    <button class="btn btn-primary" @onclick="AgregarPermiso">Agregar Permiso</button>
-</div>
+<button class="btn btn-primary mb-3" @onclick="MostrarFormularioNuevoRol">Agregar Rol</button>
 
-<div class="row">
-    <!-- Listado de Roles -->
-    <div class="col-md-6">
-        <h4>Roles</h4>
-        @if (roles == null)
-        {
-            <p><em>Cargando roles...</em></p>
-        }
-        else if (!roles.Any())
-        {
-            <p><em>No hay roles registrados.</em></p>
-        }
-        else
-        {
-            <table class="table table-striped table-hover table-bordered align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Id</th>
-                        <th>Nombre Rol</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var rol in roles)
-                    {
-                        <tr>
-                            <td>@rol.IdRol</td>
-                            <td>@rol.NombreRol</td>
-                            <td>
-                                <button class="btn btn-warning btn-sm"
-                                        @onclick="() => MostrarFormularioEdicionRol(rol)"
-                                        disabled="@guardando">
-                                    Editar
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-    </div>
-
-    <!-- Listado de Permisos -->
-    <div class="col-md-6">
-        <h4>Permisos</h4>
-        @if (permisos == null)
-        {
-            <p><em>Cargando permisos...</em></p>
-        }
-        else if (!permisos.Any())
-        {
-            <p><em>No hay permisos registrados.</em></p>
-        }
-        else
-        {
-            <table class="table table-striped table-hover table-bordered align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Id</th>
-                        <th>Nombre Permiso</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var permiso in permisos)
-                    {
-                        <tr>
-                            <td>@permiso.IdPermiso</td>
-                            <td>@permiso.NombrePermiso</td>
-                            <td>
-                                <button class="btn btn-warning btn-sm"
-                                        @onclick="() => MostrarFormularioEdicionPermiso(permiso)"
-                                        disabled="@guardando">
-                                    Editar
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-    </div>
-</div>
-
-<!-- Formularios de edición y agregar -->
-@if (rolEditando != null)
+@if (mostrarFormularioRol)
 {
-    <EditForm Model="rolEditando" OnValidSubmit="AplicarCambiosRol">
-        <InputText class="form-control" @bind-Value="rolEditando.NombreRol" />
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+    <EditForm Model="rolActual" OnValidSubmit="GuardarRol">
+        <DataAnnotationsValidator />
+
+        <div class="form-floating mb-3">
+            <InputText class="form-control" id="nombreRol" @bind-Value="rolActual.NombreRol" />
+            <label for="nombreRol">Nombre del Rol</label>
+            <ValidationMessage For="@(() => rolActual.NombreRol)" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <button type="button" class="btn btn-secondary" @onclick="CancelarRol">Cancelar</button>
     </EditForm>
 }
 
-@if (permisoEditando != null)
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre del Rol</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rol in roles)
+        {
+            <tr>
+                <td>@rol.NombreRol</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" @onclick="() => EditarRol(rol)">Editar</button>
+                    <button class="btn btn-danger btn-sm" @onclick="() => EliminarRol(rol.IdRol)">Eliminar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+
+<h2>Gestión de Permisos</h2>
+
+<button class="btn btn-primary mb-3" @onclick="MostrarFormularioNuevoPermiso">Agregar Permiso</button>
+
+@if (mostrarFormularioPermiso)
 {
-    <EditForm Model="permisoEditando" OnValidSubmit="AplicarCambiosPermiso">
-        <InputText class="form-control" @bind-Value="permisoEditando.NombrePermiso" />
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+    <EditForm Model="permisoActual" OnValidSubmit="GuardarPermiso">
+        <DataAnnotationsValidator />
+
+        <div class="form-floating mb-3">
+            <InputText class="form-control" id="nombrePermiso" @bind-Value="permisoActual.NombrePermiso" />
+            <label for="nombrePermiso">Nombre del Permiso</label>
+            <ValidationMessage For="@(() => permisoActual.NombrePermiso)" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <button type="button" class="btn btn-secondary" @onclick="CancelarPermiso">Cancelar</button>
     </EditForm>
 }
 
-@if (agregandoRol)
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre del Permiso</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var permiso in permisos)
+        {
+            <tr>
+                <td>@permiso.NombrePermiso</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" @onclick="() => EditarPermiso(permiso)">Editar</button>
+                    <button class="btn btn-danger btn-sm" @onclick="() => EliminarPermiso(permiso.IdPermiso)">Eliminar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!string.IsNullOrEmpty(mensajeError))
 {
-    <EditForm Model="nuevoRol" OnValidSubmit="GuardarNuevoRol">
-        <InputText class="form-control" @bind-Value="nuevoRol.NombreRol" />
-        <button type="submit" class="btn btn-success">Guardar Rol</button>
-        <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
-    </EditForm>
+    <div class="alert alert-danger mt-3">@mensajeError</div>
+}
+@if (!string.IsNullOrEmpty(mensajeExito))
+{
+    <div class="alert alert-success mt-3">@mensajeExito</div>
 }
 
-@if (agregandoPermiso)
-{
-    <EditForm Model="nuevoPermiso" OnValidSubmit="GuardarNuevoPermiso">
-        <InputText class="form-control" @bind-Value="nuevoPermiso.NombrePermiso" />
-        <button type="submit" class="btn btn-success">Guardar Permiso</button>
-        <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
-    </EditForm>
-} *@
+@code {
+    private List<Roles2> roles = new();
+    private Roles2 rolActual = new Roles2();
+    private bool mostrarFormularioRol = false;
+
+    private List<Permisos2> permisos = new();
+    private Permisos2 permisoActual = new Permisos2();
+    private bool mostrarFormularioPermiso = false;
+
+    private string mensajeError;
+    private string mensajeExito;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarRoles();
+        await CargarPermisos();
+    }
+
+    private async Task CargarRoles() => roles = await _rolService.ObtenerTodosRolesAsync();
+    private async Task CargarPermisos() => permisos = await _permisoService.ObtenerTodosPermisosAsync();
+
+    // Métodos Roles
+    private void MostrarFormularioNuevoRol() { rolActual = new Roles2(); mostrarFormularioRol = true; }
+    private void EditarRol(Roles2 rol) { rolActual = new Roles2 { IdRol = rol.IdRol, NombreRol = rol.NombreRol }; mostrarFormularioRol = true; }
+    private async Task GuardarRol()
+    {
+        ResultadoOperacion resultado = rolActual.IdRol == 0
+            ? await _rolService.AgregarRolAsync(rolActual)
+            : await _rolService.ActualizarRolAsync(rolActual);
+
+        if (resultado.Exito) { mensajeExito = "Rol guardado correctamente."; mensajeError = string.Empty; mostrarFormularioRol = false; await CargarRoles(); }
+        else { mensajeError = resultado.Error; mensajeExito = string.Empty; }
+    }
+    private async Task EliminarRol(int idRol)
+    {
+        var resultado = await _rolService.EliminarRolAsync(idRol);
+        if (resultado.Exito) { mensajeExito = "Rol eliminado."; mensajeError = string.Empty; await CargarRoles(); }
+        else { mensajeError = resultado.Error; mensajeExito = string.Empty; }
+    }
+    private void CancelarRol() { mostrarFormularioRol = false; rolActual = new Roles2(); }
+
+    // Métodos Permisos
+    private void MostrarFormularioNuevoPermiso() { permisoActual = new Permisos2(); mostrarFormularioPermiso = true; }
+    private void EditarPermiso(Permisos2 permiso) { permisoActual = new Permisos2 { IdPermiso = permiso.IdPermiso, NombrePermiso = permiso.NombrePermiso }; mostrarFormularioPermiso = true; }
+    private async Task GuardarPermiso()
+    {
+        ResultadoOperacionP resultado = permisoActual.IdPermiso == 0
+            ? await _permisoService.AgregarPermisoAsync(permisoActual)
+            : await _permisoService.ActualizarPermisoAsync(permisoActual);
+
+        if (resultado.Exito) { mensajeExito = "Permiso guardado correctamente."; mensajeError = string.Empty; mostrarFormularioPermiso = false; await CargarPermisos(); }
+        else { mensajeError = resultado.Error; mensajeExito = string.Empty; }
+    }
+    private async Task EliminarPermiso(int idPermiso)
+    {
+        var resultado = await _permisoService.EliminarPermisoAsync(idPermiso);
+        if (resultado.Exito) { mensajeExito = "Permiso eliminado."; mensajeError = string.Empty; await CargarPermisos(); }
+        else { mensajeError = resultado.Error; mensajeExito = string.Empty; }
+    }
+    private void CancelarPermiso() { mostrarFormularioPermiso = false; permisoActual = new Permisos2(); }
+}

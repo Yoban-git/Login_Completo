@@ -3,7 +3,7 @@ using PruebaLogin.Models.Data;
 using PruebaLogin.Models.Permisos;
 namespace PruebaLogin.ViewModels.PermissionController
 {
-    public class ResultadoOperacion
+    public class ResultadoOperacionP
     {
         public bool Exito {  get; set; }
         public string Error { get; set; }
@@ -37,27 +37,27 @@ namespace PruebaLogin.ViewModels.PermissionController
             }
         }
         //Cread
-        public async Task<ResultadoOperacion> AgregarPermisoAsync(Permisos2 permiso)
+        public async Task<ResultadoOperacionP> AgregarPermisoAsync(Permisos2 permiso)
         {
             try
             {
 		        var existe = await _context.Permisos.AnyAsync(p => p.NombrePermiso == permiso.NombrePermiso);
 		        if(existe)
 		        {
-                    return new ResultadoOperacion { Exito = false, Error = "El permiso ya existe en la base de datos." };
+                    return new ResultadoOperacionP { Exito = false, Error = "El permiso ya existe en la base de datos." };
                 }
 
                 _context.Permisos.Add(permiso);
                 await _context.SaveChangesAsync();
-                return new ResultadoOperacion { Exito = true };
+                return new ResultadoOperacionP { Exito = true };
             }
             catch (Exception ex)
             {
-                return new ResultadoOperacion { Exito = false, Error = ex.Message };
+                return new ResultadoOperacionP { Exito = false, Error = ex.Message };
             }
         }
         //actuilizar
-        public async Task<ResultadoOperacion> ActualizarPermisoAsync(Permisos2 permiso)
+        public async Task<ResultadoOperacionP> ActualizarPermisoAsync(Permisos2 permiso)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace PruebaLogin.ViewModels.PermissionController
 
                 if (permisoDb == null)
                 {
-                    return new ResultadoOperacion
+                    return new ResultadoOperacionP
                     {
                         Exito = false,
                         Error = "Permiso no encontrado"
@@ -77,16 +77,16 @@ namespace PruebaLogin.ViewModels.PermissionController
                 
                 if(existeNombre)
                 {
-                    return new ResultadoOperacion { Exito = false, Error = "Ya existe otro permiso con ese nombre." };
+                    return new ResultadoOperacionP { Exito = false, Error = "Ya existe otro permiso con ese nombre." };
                 }
                 // Actualizar solo los campos que necesitas
                 permisoDb.NombrePermiso = permiso.NombrePermiso;
                 await _context.SaveChangesAsync();
-                return new ResultadoOperacion { Exito = true };
+                return new ResultadoOperacionP { Exito = true };
             }
             catch(Exception ex)
             {
-                return new ResultadoOperacion
+                return new ResultadoOperacionP
                 {
                     Exito = false,
                     Error = $"Error inesperado: {ex.Message}"
@@ -95,21 +95,21 @@ namespace PruebaLogin.ViewModels.PermissionController
         }
 
         //eliminar
-        public async Task<ResultadoOperacion> EliminarPermisoAsync(int id)
+        public async Task<ResultadoOperacionP> EliminarPermisoAsync(int id)
         {
             try
             {
                 var permiso = await _context.Permisos.FindAsync(id);
                 if (permiso == null)
-                    return new ResultadoOperacion { Exito = false, Error = "Permimso no encontrado." };
+                    return new ResultadoOperacionP { Exito = false, Error = "Permimso no encontrado." };
 
                 _context.Permisos.Remove(permiso);
                 await _context.SaveChangesAsync();
-                return new ResultadoOperacion { Exito = true };
+                return new ResultadoOperacionP { Exito = true };
             }
             catch (Exception ex)
             {
-                return new ResultadoOperacion { Exito = false, Error = ex.Message };
+                return new ResultadoOperacionP { Exito = false, Error = ex.Message };
             }
         }
     }
