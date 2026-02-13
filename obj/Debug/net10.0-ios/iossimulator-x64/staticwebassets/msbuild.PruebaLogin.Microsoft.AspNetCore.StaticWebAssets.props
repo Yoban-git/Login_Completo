@@ -92,12 +92,12 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName>ScopedCss</AssetTraitName>
       <AssetTraitValue>ApplicationBundle</AssetTraitValue>
-      <Fingerprint>e4cfofuxwt</Fingerprint>
-      <Integrity>Hr9fB1Ojh3YC5Ea3VPzpIm70FvUycop+3SLJpo7PW/M=</Integrity>
+      <Fingerprint>zo90bvzmo8</Fingerprint>
+      <Integrity>E6hE3m+aQ+B8GLUeSNUtPG2mSZ25q7HPfrNoY98Ltk4=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <FileLength>9405</FileLength>
-      <LastWriteTime>Mon, 09 Feb 2026 20:45:28 GMT</LastWriteTime>
+      <FileLength>10971</FileLength>
+      <LastWriteTime>Wed, 11 Feb 2026 19:05:46 GMT</LastWriteTime>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\PruebaLogin.styles.css'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\_framework\blazor.modules.json'))">

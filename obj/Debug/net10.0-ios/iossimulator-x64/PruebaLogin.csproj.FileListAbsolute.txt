@@ -74,3 +74,5 @@ C:\Users\ASUS\source\repos\PruebaLogin\obj\Debug\net10.0-ios\iossimulator-x64\Pr
 C:\Users\ASUS\source\repos\PruebaLogin\obj\Debug\net10.0-ios\iossimulator-x64\PruebaLogin.AssemblyInfo.cs
 C:\Users\ASUS\source\repos\PruebaLogin\obj\Debug\net10.0-ios\iossimulator-x64\PruebaLogin.csproj.CoreCompileInputs.cache
 C:\Users\ASUS\source\repos\PruebaLogin\obj\Debug\net10.0-ios\iossimulator-x64\PruebaLogin.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ASUS\source\repos\PruebaLogin\obj\Debug\net10.0-ios\iossimulator-x64\scopedcss\Components\Pages\Login.razor.rz.scp.css
+C:\Users\ASUS\source\repos\PruebaLogin\obj\Debug\net10.0-ios\iossimulator-x64\PruebaLogin.sourcelink.json

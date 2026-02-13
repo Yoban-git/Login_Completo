@@ -82,7 +82,6 @@
         try
         {
             var resultado = await _AuthService.Login(loginModel.UserName, loginModel.Password);
-
             if (resultado.Exito)
             {
                 mensajeExito = resultado.Mensaje;

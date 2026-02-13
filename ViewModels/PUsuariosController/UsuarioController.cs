@@ -42,9 +42,17 @@ namespace PruebaLogin.ViewModels.PUsuariosController
         {
             try
             {
+                var rolExiste = await _context.Roles.AnyAsync(r => r.IdRol == usuarios.IdRol);
+                if (!rolExiste)
+                {
+                    return new ResultadoOperacion { Exito = false, Error = "El rol especificado no existe." };
+                }
+                
                 usuarios.Id = Guid.NewGuid();
                 // Hashear la contraseña antes de guardar
                 usuarios.Password = BCrypt.Net.BCrypt.HashPassword(usuarios.Password);
+
+
                 _context.Usuarios2.Add(usuarios);
                 await _context.SaveChangesAsync();
 

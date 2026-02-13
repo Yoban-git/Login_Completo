@@ -1,9 +1,12 @@
 ﻿@page "/usuarios"
 @using PruebaLogin.Models.Data
+@using PruebaLogin.Models.Roles
 @using PruebaLogin.Models.User
 @using PruebaLogin.ViewModels.PUsuariosController
+@using PruebaLogin.ViewModels.RolController
 @inject AppDbContext _context
 @inject UsuarioController _usuariocontroller
+@inject RolService _rolService
 @inject NavigationManager navManagers
 
 <h3>Gestión de Usuarios</h3>
@@ -36,6 +39,20 @@
         <ValidationMessage For="@(() => nuevoUsuario.Password)" />
     </div>
 
+        <!-- Nuevo campo para seleccionar Rol -->
+    <div class="form-floating mb-3">
+        <InputSelect class="form-select" id="rol" @bind-Value="nuevoUsuario.IdRol">
+            <option value="">-- Selecciona un Rol --</option>
+            @foreach (var rol in rolesDisponibles)
+            {
+                <option value="@rol.IdRol">@rol.NombreRol</option>
+            }
+        </InputSelect>
+        <label for="rol">Rol</label>
+        <ValidationMessage For="@(() => nuevoUsuario.IdRol)" />
+    </div>
+
+
     <button type="submit" class="btn btn-success">Registrar Usuario</button>
 </EditForm>
 <button type="button" class="btn btn-danger" @onclick="Cancelar">Danger</button>
@@ -51,10 +68,15 @@
 
 
 @code{
-    private Usuarios2 nuevoUsuario = new Usuarios2();
+    private Usuarios2 nuevoUsuario = new Usuarios2(); //hace referencia al modelo
     private string mensajeError;
     private string mensajeExito;
-
+    private List<Roles2> rolesDisponibles = new List<Roles2>();
+    protected override async Task OnInitializedAsync()
+    {
+        // Cargar roles al iniciar el componente
+        rolesDisponibles = await _rolService.ObtenerTodosRolesAsync();
+    }
     private async Task GuardarUsuario()
     {
         var resultado = await _usuariocontroller.AgregarUsuariosAsyng(nuevoUsuario);

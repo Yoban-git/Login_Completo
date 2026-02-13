@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PruebaLogin.Models.Roles;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PruebaLogin.Models.User
@@ -16,6 +17,9 @@ namespace PruebaLogin.Models.User
         public string? Email { get; set; }
         public string Password { get; set; }
         public bool Activo { get; set; } = true;
-        public string Rol { get; set; }//nuevo
+        // Relación con Rol
+        public int IdRol { get; set; }
+        public Roles2 Rol { get; set; }
+        
     }
 }
