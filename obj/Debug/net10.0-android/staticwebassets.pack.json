@@ -1,31 +1,31 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.components.webview\\10.0.0\\staticwebassets\\blazor.modules.json",
+      "Id": "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.components.webview\\10.0.0\\staticwebassets\\blazor.modules.json",
       "PackagePath": "staticwebassets\\_framework\\blazor.modules.json"
     },
     {
-      "Id": "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.components.webview\\10.0.0\\staticwebassets\\blazor.webview.js",
+      "Id": "C:\\Users\\Asus\\.nuget\\packages\\microsoft.aspnetcore.components.webview\\10.0.0\\staticwebassets\\blazor.webview.js",
       "PackagePath": "staticwebassets\\_framework\\blazor.webview.js"
     },
     {
-      "Id": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\obj\\Debug\\net10.0-android\\scopedcss\\bundle\\PruebaLogin.styles.css",
+      "Id": "C:\\Users\\Asus\\Documents\\Visual Studio 18\\Maui\\PruebaLogin\\obj\\Debug\\net10.0-android\\scopedcss\\bundle\\PruebaLogin.styles.css",
       "PackagePath": "staticwebassets\\PruebaLogin.styles.css"
     },
     {
-      "Id": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\wwwroot\\app.css",
+      "Id": "C:\\Users\\Asus\\Documents\\Visual Studio 18\\Maui\\PruebaLogin\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },
     {
-      "Id": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\wwwroot\\index.html",
+      "Id": "C:\\Users\\Asus\\Documents\\Visual Studio 18\\Maui\\PruebaLogin\\wwwroot\\index.html",
       "PackagePath": "staticwebassets\\index.html"
     },
     {
-      "Id": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "Id": "C:\\Users\\Asus\\Documents\\Visual Studio 18\\Maui\\PruebaLogin\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
     },
     {
-      "Id": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "Id": "C:\\Users\\Asus\\Documents\\Visual Studio 18\\Maui\\PruebaLogin\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
     },
     {

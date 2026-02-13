@@ -12,7 +12,7 @@ namespace PruebaLogin.ViewModels.Login
         public string CurrentUser { get; private set; }
         public Guid CurrentUserId { get; private set; }
         public string CurrentUserEmail { get; private set; }
-        public string CurrentUserRol { get; private set; }//nuevo
+        public int? CurrentUserRol { get; private set; }//nuevo
         public AuthService(AppDbContext context)
         {
             _context = context;
@@ -34,8 +34,8 @@ namespace PruebaLogin.ViewModels.Login
                 // Buscar usuario por username o email (SIN filtrar por Activo)
                 var user = await _context.Usuarios2
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(u => u.UserName == username || u.Email == username);
-
+                    //.FirstOrDefaultAsync(u => u.UserName == username || u.Email == username);
+                    .FirstOrDefaultAsync(u => u.UserName == username);
                 if (user == null)
                 {
                     return new ResultadoLogin
@@ -72,7 +72,7 @@ namespace PruebaLogin.ViewModels.Login
                 CurrentUser = user.Nombre;
                 CurrentUserId = user.Id;
                 CurrentUserEmail = user.Email;
-                CurrentUserRol = user.Rol; //nuevo
+                CurrentUserRol = user.IdRol; //nuevo
                 NotifyStateChanged();
 
                 return new ResultadoLogin
@@ -92,8 +92,8 @@ namespace PruebaLogin.ViewModels.Login
             }
         }
         // NUEVO: Métodos helper para verificar roles
-        public bool EsAdministrador() => CurrentUserRol == "Admin";
-        public bool EsUsuario() => CurrentUserRol == "Usuario";
+        public bool EsAdministrador() => CurrentUserRol == 1;
+        public bool EsUsuario() => CurrentUserRol == 2;
         //fin de lo nuevo
         public void Logout()
         {

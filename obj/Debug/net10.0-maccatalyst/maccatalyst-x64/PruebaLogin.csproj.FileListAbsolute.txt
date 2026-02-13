@@ -68,3 +68,5 @@ C:\Users\ASUS\source\repos\PruebaLogin\obj\Debug\net10.0-maccatalyst\maccatalyst
 C:\Users\ASUS\source\repos\PruebaLogin\obj\Debug\net10.0-maccatalyst\maccatalyst-x64\PruebaLogin.AssemblyInfo.cs
 C:\Users\ASUS\source\repos\PruebaLogin\obj\Debug\net10.0-maccatalyst\maccatalyst-x64\PruebaLogin.csproj.CoreCompileInputs.cache
 C:\Users\ASUS\source\repos\PruebaLogin\obj\Debug\net10.0-maccatalyst\maccatalyst-x64\PruebaLogin.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ASUS\source\repos\PruebaLogin\obj\Debug\net10.0-maccatalyst\maccatalyst-x64\scopedcss\Components\Pages\Login.razor.rz.scp.css
+C:\Users\ASUS\source\repos\PruebaLogin\obj\Debug\net10.0-maccatalyst\maccatalyst-x64\PruebaLogin.sourcelink.json

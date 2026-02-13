@@ -1,0 +1,131 @@
+﻿@* @page "/roles-permisos-list"
+@using PruebaLogin.Models.Roles
+@using PruebaLogin.Models.Permisos
+
+<h3>Gestión de Roles y Permisos</h3>
+
+<div class="text-center mb-3">
+    <button class="btn btn-success me-2" @onclick="AgregarRol">Agregar Rol</button>
+    <button class="btn btn-primary" @onclick="AgregarPermiso">Agregar Permiso</button>
+</div>
+
+<div class="row">
+    <!-- Listado de Roles -->
+    <div class="col-md-6">
+        <h4>Roles</h4>
+        @if (roles == null)
+        {
+            <p><em>Cargando roles...</em></p>
+        }
+        else if (!roles.Any())
+        {
+            <p><em>No hay roles registrados.</em></p>
+        }
+        else
+        {
+            <table class="table table-striped table-hover table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rol in roles)
+                    {
+                        <tr>
+                            <td>@rol.IdRol</td>
+                            <td>@rol.NombreRol</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm"
+                                        @onclick="() => MostrarFormularioEdicionRol(rol)"
+                                        disabled="@guardando">
+                                    Editar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+    <!-- Listado de Permisos -->
+    <div class="col-md-6">
+        <h4>Permisos</h4>
+        @if (permisos == null)
+        {
+            <p><em>Cargando permisos...</em></p>
+        }
+        else if (!permisos.Any())
+        {
+            <p><em>No hay permisos registrados.</em></p>
+        }
+        else
+        {
+            <table class="table table-striped table-hover table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre Permiso</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var permiso in permisos)
+                    {
+                        <tr>
+                            <td>@permiso.IdPermiso</td>
+                            <td>@permiso.NombrePermiso</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm"
+                                        @onclick="() => MostrarFormularioEdicionPermiso(permiso)"
+                                        disabled="@guardando">
+                                    Editar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<!-- Formularios de edición y agregar -->
+@if (rolEditando != null)
+{
+    <EditForm Model="rolEditando" OnValidSubmit="AplicarCambiosRol">
+        <InputText class="form-control" @bind-Value="rolEditando.NombreRol" />
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+    </EditForm>
+}
+
+@if (permisoEditando != null)
+{
+    <EditForm Model="permisoEditando" OnValidSubmit="AplicarCambiosPermiso">
+        <InputText class="form-control" @bind-Value="permisoEditando.NombrePermiso" />
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+    </EditForm>
+}
+
+@if (agregandoRol)
+{
+    <EditForm Model="nuevoRol" OnValidSubmit="GuardarNuevoRol">
+        <InputText class="form-control" @bind-Value="nuevoRol.NombreRol" />
+        <button type="submit" class="btn btn-success">Guardar Rol</button>
+        <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+    </EditForm>
+}
+
+@if (agregandoPermiso)
+{
+    <EditForm Model="nuevoPermiso" OnValidSubmit="GuardarNuevoPermiso">
+        <InputText class="form-control" @bind-Value="nuevoPermiso.NombrePermiso" />
+        <button type="submit" class="btn btn-success">Guardar Permiso</button>
+        <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+    </EditForm>
+} *@

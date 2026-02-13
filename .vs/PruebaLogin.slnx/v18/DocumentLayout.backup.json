@@ -1,22 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\",
+  "WorkspaceRootPath": "C:\\Users\\Asus\\Documents\\Visual Studio 18\\Maui\\PruebaLogin\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7301021C-2E53-1FF9-FE2E-1C4D83B4E829}|PruebaLogin.csproj|c:\\users\\asus\\source\\repos\\pruebalogin\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{7301021C-2E53-1FF9-FE2E-1C4D83B4E829}|PruebaLogin.csproj|c:\\users\\asus\\documents\\visual studio 18\\maui\\pruebalogin\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{7301021C-2E53-1FF9-FE2E-1C4D83B4E829}|PruebaLogin.csproj|solutionrelative:components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7301021C-2E53-1FF9-FE2E-1C4D83B4E829}|PruebaLogin.csproj|c:\\users\\asus\\source\\repos\\pruebalogin\\viewmodels\\login\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7301021C-2E53-1FF9-FE2E-1C4D83B4E829}|PruebaLogin.csproj|solutionrelative:viewmodels\\login\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7301021C-2E53-1FF9-FE2E-1C4D83B4E829}|PruebaLogin.csproj|c:\\users\\asus\\source\\repos\\pruebalogin\\models\\user\\usuarios2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7301021C-2E53-1FF9-FE2E-1C4D83B4E829}|PruebaLogin.csproj|solutionrelative:models\\user\\usuarios2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7301021C-2E53-1FF9-FE2E-1C4D83B4E829}|PruebaLogin.csproj|c:\\users\\asus\\source\\repos\\pruebalogin\\components\\routes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{7301021C-2E53-1FF9-FE2E-1C4D83B4E829}|PruebaLogin.csproj|solutionrelative:components\\routes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,58 +14,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Usuarios2.cs",
-              "DocumentMoniker": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\Models\\User\\Usuarios2.cs",
-              "RelativeDocumentMoniker": "Models\\User\\Usuarios2.cs",
-              "ToolTip": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\Models\\User\\Usuarios2.cs",
-              "RelativeToolTip": "Models\\User\\Usuarios2.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-11T07:53:44.442Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\ViewModels\\Login\\AuthService.cs",
-              "RelativeDocumentMoniker": "ViewModels\\Login\\AuthService.cs",
-              "ToolTip": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\ViewModels\\Login\\AuthService.cs",
-              "RelativeToolTip": "ViewModels\\Login\\AuthService.cs",
-              "ViewState": "AgIAAEkAAAAAAAAAAAAwwGcAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-11T07:28:51.472Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "MainLayout.razor",
-              "DocumentMoniker": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\Components\\Layout\\MainLayout.razor",
+              "DocumentMoniker": "C:\\Users\\Asus\\Documents\\Visual Studio 18\\Maui\\PruebaLogin\\Components\\Layout\\MainLayout.razor",
               "RelativeDocumentMoniker": "Components\\Layout\\MainLayout.razor",
-              "ToolTip": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\Components\\Layout\\MainLayout.razor",
-              "RelativeToolTip": "Components\\Layout\\MainLayout.razor",
-              "ViewState": "AgIAABIAAAAAAAAAAAAAACUAAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\Asus\\Documents\\Visual Studio 18\\Maui\\PruebaLogin\\Components\\Layout\\MainLayout.razor*",
+              "RelativeToolTip": "Components\\Layout\\MainLayout.razor*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-11T07:13:54.498Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Routes.razor",
-              "DocumentMoniker": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\Components\\Routes.razor",
-              "RelativeDocumentMoniker": "Components\\Routes.razor",
-              "ToolTip": "C:\\Users\\ASUS\\source\\repos\\PruebaLogin\\Components\\Routes.razor",
-              "RelativeToolTip": "Components\\Routes.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-11T07:06:46.622Z",
+              "WhenOpened": "2026-02-13T15:50:43.404Z",
               "EditorCaption": ""
             }
           ]

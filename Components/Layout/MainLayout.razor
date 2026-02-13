@@ -4,15 +4,7 @@
 @inject NavigationManager navManager
 <div class="page">
     <div class="sidebar">
-        @switch(_AuthService.CurrentUserRol) //si no funcio solo quitar el switch
-        {
-            case "Admin":
                 <NavMenu />
-                break;
-            case "Usuario":
-                <NavMenuUser/>
-                break;
-        }
     </div>
 
     <main>
