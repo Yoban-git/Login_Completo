@@ -1,6 +1,6 @@
 is_global = true
 build_property.MauiXamlNoWarn = 
-build_property.EnableMauiXamlDiagnostics = true
+build_property.EnableMauiXamlDiagnostics = True
 build_property.MauiXamlLineInfo = 
 build_property.Configuration = Debug
 build_property.TargetFramework = net10.0-windows10.0.19041.0
@@ -112,6 +112,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.GenKind = 
 build_metadata.AdditionalFiles.ManifestResourceName = 
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xHZXN0aW9uUm9sZXNQZXJtaXNvcy5yYXpvcg==
+build_metadata.AdditionalFiles.RelativePath = 
+build_metadata.AdditionalFiles.Inflator = 
+build_metadata.AdditionalFiles.NoWarn = 
+build_metadata.AdditionalFiles.EnableDiagnostics = 
+build_metadata.AdditionalFiles.LineInfo = 
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Asus/Documents/Visual Studio 18/Maui/PruebaLogin/Components/Pages/ListaPermisos.razor]
+build_metadata.AdditionalFiles.GenKind = 
+build_metadata.AdditionalFiles.ManifestResourceName = 
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMaXN0YVBlcm1pc29zLnJhem9y
+build_metadata.AdditionalFiles.RelativePath = 
+build_metadata.AdditionalFiles.Inflator = 
+build_metadata.AdditionalFiles.NoWarn = 
+build_metadata.AdditionalFiles.EnableDiagnostics = 
+build_metadata.AdditionalFiles.LineInfo = 
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Asus/Documents/Visual Studio 18/Maui/PruebaLogin/Components/Pages/ListaRoles.razor]
+build_metadata.AdditionalFiles.GenKind = 
+build_metadata.AdditionalFiles.ManifestResourceName = 
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMaXN0YVJvbGVzLnJhem9y
 build_metadata.AdditionalFiles.RelativePath = 
 build_metadata.AdditionalFiles.Inflator = 
 build_metadata.AdditionalFiles.NoWarn = 

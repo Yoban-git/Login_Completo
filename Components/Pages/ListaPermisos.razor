@@ -1,0 +1,150 @@
+﻿@page "/Lista_Permisos"
+@using PruebaLogin.Models.Permisos
+@using PruebaLogin.ViewModels.PermissionController
+@inject PermisoService _permisoService
+
+<h2>Gestión de Permisos</h2>
+
+<button class="btn btn-primary mb-3" @onclick="MostrarFormularioNuevoPermiso">Agregar Permiso</button>
+
+@if (cargando)
+{
+    <div class="text-center mt-3">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p>Cargando permisos, por favor espera...</p>
+    </div>
+}
+else
+{
+    @if (mostrarFormularioPermiso)
+    {
+        <EditForm Model="permisoActual" OnValidSubmit="GuardarPermiso">
+            <DataAnnotationsValidator />
+
+            <div class="form-floating mb-3">
+                <InputText class="form-control" id="nombrePermiso" @bind-Value="permisoActual.NombrePermiso" />
+                <label for="nombrePermiso">Nombre del Permiso</label>
+                <ValidationMessage For="@(() => permisoActual.NombrePermiso)" />
+            </div>
+
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-secondary" @onclick="CancelarPermiso">Cancelar</button>
+        </EditForm>
+    }
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre del Permiso</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var permiso in permisos)
+            {
+                <tr>
+                    <td>@permiso.NombrePermiso</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="() => EditarPermiso(permiso)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarPermiso(permiso.IdPermiso)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (!string.IsNullOrEmpty(mensajeError))
+{
+    <div class="alert alert-danger mt-3">@mensajeError</div>
+}
+@if (!string.IsNullOrEmpty(mensajeExito))
+{
+    <div class="alert alert-success mt-3">@mensajeExito</div>
+}
+
+@code {
+    private List<Permisos2> permisos = new();
+    private Permisos2 permisoActual = new Permisos2();
+    private bool mostrarFormularioPermiso = false;
+    private bool cargando = true; // bandera para mostrar el spinner
+
+    private string mensajeError;
+    private string mensajeExito;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Delay inicial antes de cargar
+        await Task.Delay(2000); // espera 2 segundos
+        await CargarPermisos();
+        cargando = false; // ocultar el spinner
+    }
+
+    private async Task CargarPermisos()
+    {
+        permisos = await _permisoService.ObtenerTodosPermisosAsync();
+    }
+
+    // Métodos Permisos
+    private void MostrarFormularioNuevoPermiso() 
+    { 
+        permisoActual = new Permisos2(); 
+        mostrarFormularioPermiso = true; 
+    }
+
+    private void EditarPermiso(Permisos2 permiso) 
+    { 
+        permisoActual = new Permisos2 { IdPermiso = permiso.IdPermiso, NombrePermiso = permiso.NombrePermiso }; 
+        mostrarFormularioPermiso = true; 
+    }
+
+    private async Task GuardarPermiso()
+    {
+        ResultadoOperacionP resultado = permisoActual.IdPermiso == 0
+            ? await _permisoService.AgregarPermisoAsync(permisoActual)
+            : await _permisoService.ActualizarPermisoAsync(permisoActual);
+
+        if (resultado.Exito) 
+        { 
+            mensajeExito = "Permiso guardado correctamente."; 
+            mensajeError = string.Empty; 
+            mostrarFormularioPermiso = false; 
+            cargando = true; // mostrar spinner mientras recarga
+            await Task.Delay(1000); // pequeño delay antes de recargar
+            await CargarPermisos(); 
+            cargando = false; 
+        }
+        else 
+        { 
+            mensajeError = resultado.Error; 
+            mensajeExito = string.Empty; 
+        }
+    }
+
+    private async Task EliminarPermiso(int idPermiso)
+    {
+        var resultado = await _permisoService.EliminarPermisoAsync(idPermiso);
+        if (resultado.Exito) 
+        { 
+            mensajeExito = "Permiso eliminado."; 
+            mensajeError = string.Empty; 
+            cargando = true; 
+            await Task.Delay(1000); // delay antes de recargar
+            await CargarPermisos(); 
+            cargando = false; 
+        }
+        else 
+        { 
+            mensajeError = resultado.Error; 
+            mensajeExito = string.Empty; 
+        }
+    }
+
+    private void CancelarPermiso() 
+    { 
+        mostrarFormularioPermiso = false; 
+        permisoActual = new Permisos2(); 
+    }
+}
