@@ -1,34 +1,19 @@
-﻿@page "/roles-permisos"
+﻿@page "/Gestion_roles_permisos"
 @using PruebaLogin.Models.Roles
 @using PruebaLogin.Models.Permisos
 @using PruebaLogin.ViewModels.RolController
 @using PruebaLogin.ViewModels.PermissionController
+@using PruebaLogin.ViewModels.RPController
 @inject RolService _rolService
 @inject PermisoService _permisoService
+@inject RolPermisoService _rolPermisoService
 
-<h2>Gestión de Roles</h2>
-
-<button class="btn btn-primary mb-3" @onclick="MostrarFormularioNuevoRol">Agregar Rol</button>
-
-@if (mostrarFormularioRol)
-{
-    <EditForm Model="rolActual" OnValidSubmit="GuardarRol">
-        <DataAnnotationsValidator />
-
-        <div class="form-floating mb-3">
-            <InputText class="form-control" id="nombreRol" @bind-Value="rolActual.NombreRol" />
-            <label for="nombreRol">Nombre del Rol</label>
-            <ValidationMessage For="@(() => rolActual.NombreRol)" />
-        </div>
-
-        <button type="submit" class="btn btn-success">Guardar</button>
-        <button type="button" class="btn btn-secondary" @onclick="CancelarRol">Cancelar</button>
-    </EditForm>
-}
+<h3>Gestión de Roles y Permisos</h3>
 
 <table class="table table-striped">
     <thead>
         <tr>
+            <th>Id</th>
             <th>Nombre del Rol</th>
             <th>Acciones</th>
         </tr>
@@ -37,55 +22,37 @@
         @foreach (var rol in roles)
         {
             <tr>
+                <td>@rol.IdRol</td>
                 <td>@rol.NombreRol</td>
                 <td>
-                    <button class="btn btn-warning btn-sm" @onclick="() => EditarRol(rol)">Editar</button>
-                    <button class="btn btn-danger btn-sm" @onclick="() => EliminarRol(rol.IdRol)">Eliminar</button>
+                    <button class="btn btn-primary btn-sm" @onclick="() => MostrarPermisos(rol.IdRol)">
+                        Asignar Permisos
+                    </button>
                 </td>
             </tr>
-        }
-    </tbody>
-</table>
-
-<hr />
-
-<h2>Gestión de Permisos</h2>
-
-<button class="btn btn-primary mb-3" @onclick="MostrarFormularioNuevoPermiso">Agregar Permiso</button>
-
-@if (mostrarFormularioPermiso)
-{
-    <EditForm Model="permisoActual" OnValidSubmit="GuardarPermiso">
-        <DataAnnotationsValidator />
-
-        <div class="form-floating mb-3">
-            <InputText class="form-control" id="nombrePermiso" @bind-Value="permisoActual.NombrePermiso" />
-            <label for="nombrePermiso">Nombre del Permiso</label>
-            <ValidationMessage For="@(() => permisoActual.NombrePermiso)" />
-        </div>
-
-        <button type="submit" class="btn btn-success">Guardar</button>
-        <button type="button" class="btn btn-secondary" @onclick="CancelarPermiso">Cancelar</button>
-    </EditForm>
-}
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Nombre del Permiso</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var permiso in permisos)
-        {
-            <tr>
-                <td>@permiso.NombrePermiso</td>
-                <td>
-                    <button class="btn btn-warning btn-sm" @onclick="() => EditarPermiso(permiso)">Editar</button>
-                    <button class="btn btn-danger btn-sm" @onclick="() => EliminarPermiso(permiso.IdPermiso)">Eliminar</button>
-                </td>
-            </tr>
+            @if (rol.IdRol == rolSeleccionadoId)
+            {
+                <tr>
+                    <td colspan="3">
+                        <h5>Permisos para: @rol.NombreRol</h5>
+                        <div class="form-check form-switch" style="margin-left:20px;">
+                            @foreach (var permiso in permisos)
+                            {
+                                bool asignado = permisosSeleccionados.Contains(permiso.IdPermiso);
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="permiso_@permiso.IdPermiso"
+                                           checked="@asignado"
+                                           @onchange="(e) => TogglePermisoLocal(permiso.IdPermiso, (bool)e.Value)" />
+                                    <label class="form-check-label" for="permiso_@permiso.IdPermiso">
+                                        @permiso.NombrePermiso
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                        <button class="btn btn-success mt-3" @onclick="GuardarCambios">Guardar cambios</button>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
@@ -101,62 +68,65 @@
 
 @code {
     private List<Roles2> roles = new();
-    private Roles2 rolActual = new Roles2();
-    private bool mostrarFormularioRol = false;
-
     private List<Permisos2> permisos = new();
-    private Permisos2 permisoActual = new Permisos2();
-    private bool mostrarFormularioPermiso = false;
+    private HashSet<int> permisosSeleccionados = new();
+
+    private int rolSeleccionadoId;
 
     private string mensajeError;
     private string mensajeExito;
 
     protected override async Task OnInitializedAsync()
     {
-        await CargarRoles();
-        await CargarPermisos();
+        roles = await _rolService.ObtenerTodosRolesAsync();
+        permisos = await _permisoService.ObtenerTodosPermisosAsync();
     }
 
-    private async Task CargarRoles() => roles = await _rolService.ObtenerTodosRolesAsync();
-    private async Task CargarPermisos() => permisos = await _permisoService.ObtenerTodosPermisosAsync();
-
-    // Métodos Roles
-    private void MostrarFormularioNuevoRol() { rolActual = new Roles2(); mostrarFormularioRol = true; }
-    private void EditarRol(Roles2 rol) { rolActual = new Roles2 { IdRol = rol.IdRol, NombreRol = rol.NombreRol }; mostrarFormularioRol = true; }
-    private async Task GuardarRol()
+    private async Task MostrarPermisos(int idRol)
     {
-        ResultadoOperacion resultado = rolActual.IdRol == 0
-            ? await _rolService.AgregarRolAsync(rolActual)
-            : await _rolService.ActualizarRolAsync(rolActual);
+        rolSeleccionadoId = idRol;
+        var permisosDelRol = await _rolPermisoService.ObtenerPermisosPorRolAsync(idRol);
+        permisosSeleccionados = permisosDelRol.Select(p => p.IdPermiso).ToHashSet();
+    }
 
-        if (resultado.Exito) { mensajeExito = "Rol guardado correctamente."; mensajeError = string.Empty; mostrarFormularioRol = false; await CargarRoles(); }
-        else { mensajeError = resultado.Error; mensajeExito = string.Empty; }
-    }
-    private async Task EliminarRol(int idRol)
+    // Cambia solo en memoria local
+    private void TogglePermisoLocal(int idPermiso, bool asignar)
     {
-        var resultado = await _rolService.EliminarRolAsync(idRol);
-        if (resultado.Exito) { mensajeExito = "Rol eliminado."; mensajeError = string.Empty; await CargarRoles(); }
-        else { mensajeError = resultado.Error; mensajeExito = string.Empty; }
+        if (asignar)
+            permisosSeleccionados.Add(idPermiso);
+        else
+            permisosSeleccionados.Remove(idPermiso);
     }
-    private void CancelarRol() { mostrarFormularioRol = false; rolActual = new Roles2(); }
 
-    // Métodos Permisos
-    private void MostrarFormularioNuevoPermiso() { permisoActual = new Permisos2(); mostrarFormularioPermiso = true; }
-    private void EditarPermiso(Permisos2 permiso) { permisoActual = new Permisos2 { IdPermiso = permiso.IdPermiso, NombrePermiso = permiso.NombrePermiso }; mostrarFormularioPermiso = true; }
-    private async Task GuardarPermiso()
+    // Aplica cambios en la base de datos al presionar Guardar
+    private async Task GuardarCambios()
     {
-        ResultadoOperacionP resultado = permisoActual.IdPermiso == 0
-            ? await _permisoService.AgregarPermisoAsync(permisoActual)
-            : await _permisoService.ActualizarPermisoAsync(permisoActual);
+        if (rolSeleccionadoId == 0)
+        {
+            mensajeError = "Debes seleccionar un rol.";
+            mensajeExito = string.Empty;
+            return;
+        }
 
-        if (resultado.Exito) { mensajeExito = "Permiso guardado correctamente."; mensajeError = string.Empty; mostrarFormularioPermiso = false; await CargarPermisos(); }
-        else { mensajeError = resultado.Error; mensajeExito = string.Empty; }
+        // Obtener permisos actuales en BD
+        var permisosActuales = await _rolPermisoService.ObtenerPermisosPorRolAsync(rolSeleccionadoId);
+        var idsActuales = permisosActuales.Select(p => p.IdPermiso).ToHashSet();
+
+        // Permisos a agregar
+        var agregar = permisosSeleccionados.Except(idsActuales);
+        foreach (var idPermiso in agregar)
+        {
+            await _rolPermisoService.AsignarPermisoARolAsync(rolSeleccionadoId, idPermiso);
+        }
+
+        // Permisos a eliminar
+        var eliminar = idsActuales.Except(permisosSeleccionados);
+        foreach (var idPermiso in eliminar)
+        {
+            await _rolPermisoService.EliminarPermisoDeRolAsync(rolSeleccionadoId, idPermiso);
+        }
+
+        mensajeExito = "Cambios guardados correctamente.";
+        mensajeError = string.Empty;
     }
-    private async Task EliminarPermiso(int idPermiso)
-    {
-        var resultado = await _permisoService.EliminarPermisoAsync(idPermiso);
-        if (resultado.Exito) { mensajeExito = "Permiso eliminado."; mensajeError = string.Empty; await CargarPermisos(); }
-        else { mensajeError = resultado.Error; mensajeExito = string.Empty; }
-    }
-    private void CancelarPermiso() { mostrarFormularioPermiso = false; permisoActual = new Permisos2(); }
 }

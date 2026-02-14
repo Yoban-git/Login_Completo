@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PruebaLogin.Models.Data;
+using PruebaLogin.Models.Permisos;
 using PruebaLogin.Models.RolesPermisos;
 
 namespace PruebaLogin.ViewModels.RPController
 {
-    public class ResultadoOperacion
+    public class ResultadoOperacionRP
     {
         public bool Exito { get; set; }
         public string Error { get; set; }
@@ -27,16 +28,17 @@ namespace PruebaLogin.ViewModels.RPController
         }
 
         // Listar todos los permisos asignados a un rol
-        public async Task<List<RolPermiso>> ObtenerPermisosPorRolAsync(int idRol)
+        public async Task<List<Permisos2>> ObtenerPermisosPorRolAsync(int idRol)
         {
             return await _context.RolPermiso
-                .Include(rp => rp.Permiso)
                 .Where(rp => rp.IdRol == idRol)
+                .Include(rp => rp.Permiso)
+                .Select(rp => rp.Permiso)
                 .ToListAsync();
         }
 
         // Asignar un permiso a un rol
-        public async Task<ResultadoOperacion> AsignarPermisoARolAsync(int idRol, int idPermiso)
+        public async Task<ResultadoOperacionRP> AsignarPermisoARolAsync(int idRol, int idPermiso)
         {
             try
             {
@@ -45,7 +47,7 @@ namespace PruebaLogin.ViewModels.RPController
 
                 if (existe)
                 {
-                    return new ResultadoOperacion
+                    return new ResultadoOperacionRP
                     {
                         Exito = false,
                         Error = "El permiso ya está asignado a este rol."
@@ -61,16 +63,16 @@ namespace PruebaLogin.ViewModels.RPController
                 _context.RolPermiso.Add(rolPermiso);
                 await _context.SaveChangesAsync();
 
-                return new ResultadoOperacion { Exito = true };
+                return new ResultadoOperacionRP { Exito = true };
             }
             catch (Exception ex)
             {
-                return new ResultadoOperacion { Exito = false, Error = ex.Message };
+                return new ResultadoOperacionRP { Exito = false, Error = ex.Message };
             }
         }
 
         // Actualizar el permiso de un rol
-        public async Task<ResultadoOperacion> ActualizarPermisoDeRolAsync(int idRol, int idPermisoActual, int idPermisoNuevo)
+        public async Task<ResultadoOperacionRP> ActualizarPermisoDeRolAsync(int idRol, int idPermisoActual, int idPermisoNuevo)
         {
             try
             {
@@ -79,7 +81,7 @@ namespace PruebaLogin.ViewModels.RPController
 
                 if (rolPermiso == null)
                 {
-                    return new ResultadoOperacion
+                    return new ResultadoOperacionRP
                     {
                         Exito = false,
                         Error = "La relación Rol-Permiso no existe."
@@ -89,14 +91,14 @@ namespace PruebaLogin.ViewModels.RPController
                 var permisoExiste = await _context.Permisos.AnyAsync(p => p.IdPermiso == idPermisoNuevo);
                 if (!permisoExiste)
                 {
-                    return new ResultadoOperacion { Exito = false, Error = "El permiso nuevo no existe." };
+                    return new ResultadoOperacionRP { Exito = false, Error = "El permiso nuevo no existe." };
                 }
                 // Validar que el nuevo permiso no esté ya asignado al rol
                 var existe = await _context.RolPermiso.AnyAsync(rp => rp.IdRol == idRol && rp.IdPermiso == idPermisoNuevo);
 
                 if (existe)
                 {
-                    return new ResultadoOperacion
+                    return new ResultadoOperacionRP
                     {
                         Exito = false,
                         Error = "El rol ya tiene asignado ese nuevo permiso."
@@ -107,11 +109,11 @@ namespace PruebaLogin.ViewModels.RPController
                 rolPermiso.IdPermiso = idPermisoNuevo;
                 await _context.SaveChangesAsync();
 
-                return new ResultadoOperacion { Exito = true };
+                return new ResultadoOperacionRP { Exito = true };
             }
             catch (Exception ex)
             {
-                return new ResultadoOperacion
+                return new ResultadoOperacionRP
                 {
                     Exito = false,
                     Error = $"Error inesperado: {ex.Message}"
@@ -120,7 +122,7 @@ namespace PruebaLogin.ViewModels.RPController
         }
 
         // Eliminar un permiso de un rol
-        public async Task<ResultadoOperacion> EliminarPermisoDeRolAsync(int idRol, int idPermiso)
+        public async Task<ResultadoOperacionRP> EliminarPermisoDeRolAsync(int idRol, int idPermiso)
         {
             try
             {
@@ -128,7 +130,7 @@ namespace PruebaLogin.ViewModels.RPController
 
                 if (rolPermiso == null)
                 {
-                    return new ResultadoOperacion
+                    return new ResultadoOperacionRP
                     {
                         Exito = false,
                         Error = "La relación Rol-Permiso no existe."
@@ -138,11 +140,11 @@ namespace PruebaLogin.ViewModels.RPController
                 _context.RolPermiso.Remove(rolPermiso);
                 await _context.SaveChangesAsync();
 
-                return new ResultadoOperacion { Exito = true };
+                return new ResultadoOperacionRP { Exito = true };
             }
             catch (Exception ex)
             {
-                return new ResultadoOperacion { Exito = false, Error = ex.Message };
+                return new ResultadoOperacionRP { Exito = false, Error = ex.Message };
             }
         }
 
