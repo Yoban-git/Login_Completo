@@ -1,0 +1,60 @@
+﻿<h3>AltaPermiso</h3>
+
+<h2>Gestión de Permisos</h2>
+
+<button class="btn btn-primary mb-3" @onclick="MostrarFormularioNuevoPermiso">Agregar Permiso</button>
+
+@if (mostrarFormularioPermiso)
+{
+    <EditForm Model="permisoActual" OnValidSubmit="GuardarPermiso">
+        <DataAnnotationsValidator />
+
+        <div class="form-floating mb-3">
+            <InputText class="form-control" id="nombrePermiso" @bind-Value="permisoActual.NombrePermiso" />
+            <label for="nombrePermiso">Nombre del Permiso</label>
+            <ValidationMessage For="@(() => permisoActual.NombrePermiso)" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <button type="button" class="btn btn-secondary" @onclick="CancelarPermiso">Cancelar</button>
+    </EditForm>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre del Permiso</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var permiso in permisos)
+        {
+            <tr>
+                <td>@permiso.NombrePermiso</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" @onclick="() => EditarPermiso(permiso)">Editar</button>
+                    <button class="btn btn-danger btn-sm" @onclick="() => EliminarPermiso(permiso.IdPermiso)">Eliminar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!string.IsNullOrEmpty(mensajeError))
+{
+    <div class="alert alert-danger mt-3">@mensajeError</div>
+}
+@if (!string.IsNullOrEmpty(mensajeExito))
+{
+    <div class="alert alert-success mt-3">@mensajeExito</div>
+
+}
+
+@code {
+    private List<Permisos2> permisos = new();
+    private Permisos2 permisoActual = new Permisos2();
+    private bool mostrarFormularioPermiso = false;
+    private string mensajeError;
+    private string mensajeExito;
+}
