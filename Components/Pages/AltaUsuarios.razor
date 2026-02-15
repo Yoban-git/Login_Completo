@@ -52,10 +52,9 @@
         <ValidationMessage For="@(() => nuevoUsuario.IdRol)" />
     </div>
 
-
     <button type="submit" class="btn btn-success">Registrar Usuario</button>
+    <button type="button" class="btn btn-danger" @onclick="Cancelar">Cancelar</button>
 </EditForm>
-<button type="button" class="btn btn-danger" @onclick="Cancelar">Danger</button>
 
 @if (!string.IsNullOrEmpty(mensajeError))
 {

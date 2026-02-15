@@ -22,7 +22,8 @@ namespace PruebaLogin.ViewModels.Login
             try
             {
                 // Validaciones básicas
-                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+                //if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+                if (string.IsNullOrWhiteSpace(username))
                 {
                     return new ResultadoLogin
                     {

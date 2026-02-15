@@ -1,4 +1,9 @@
-﻿<h3>AltaPermiso</h3>
+﻿@page "/AltaPermisos"
+@using PruebaLogin.Models.Permisos
+@using PruebaLogin.ViewModels.PermissionController
+@inject PermisoService _permisoService
+@inject NavigationManager navManagers
+<h3>AltaPermiso</h3>
 
 <h2>Gestión de Permisos</h2>
 
@@ -55,6 +60,33 @@
     private List<Permisos2> permisos = new();
     private Permisos2 permisoActual = new Permisos2();
     private bool mostrarFormularioPermiso = false;
+
     private string mensajeError;
     private string mensajeExito;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarPermisos();
+    }
+    private async Task CargarPermisos() => permisos = await _permisoService.ObtenerTodosPermisosAsync();
+
+    // Métodos Permisos
+    private void MostrarFormularioNuevoPermiso() { permisoActual = new Permisos2(); mostrarFormularioPermiso = true; }
+    private void EditarPermiso(Permisos2 permiso) { permisoActual = new Permisos2 { IdPermiso = permiso.IdPermiso, NombrePermiso = permiso.NombrePermiso }; mostrarFormularioPermiso = true; }
+    private async Task GuardarPermiso()
+    {
+        ResultadoOperacionP resultado = permisoActual.IdPermiso == 0
+            ? await _permisoService.AgregarPermisoAsync(permisoActual)
+            : await _permisoService.ActualizarPermisoAsync(permisoActual);
+
+        if (resultado.Exito) { mensajeExito = "Permiso guardado correctamente."; mensajeError = string.Empty; mostrarFormularioPermiso = false; await CargarPermisos(); }
+        else { mensajeError = resultado.Error; mensajeExito = string.Empty; }
+    }
+    private async Task EliminarPermiso(int idPermiso)
+    {
+        var resultado = await _permisoService.EliminarPermisoAsync(idPermiso);
+        if (resultado.Exito) { mensajeExito = "Permiso eliminado."; mensajeError = string.Empty; await CargarPermisos(); }
+        else { mensajeError = resultado.Error; mensajeExito = string.Empty; }
+    }
+    private void CancelarPermiso() {  navManagers.NavigateTo("/Lista_Permisos"); }
 }

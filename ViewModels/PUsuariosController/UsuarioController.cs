@@ -83,6 +83,7 @@ namespace PruebaLogin.ViewModels.PUsuariosController
                 usuarioDb.Nombre = usuario.Nombre;
                 usuarioDb.UserName = usuario.UserName;
                 usuarioDb.Email = usuario.Email;
+                usuarioDb.IdRol = usuario.IdRol;
                 await _context.SaveChangesAsync();
                 return new ResultadoOperacion { Exito = true };
             }
